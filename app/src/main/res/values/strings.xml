@@ -1,0 +1,57 @@
+<resources>
+    <string name="app_name">CapStone</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="action_search_location">Search Location</string>
+    <string name="action_create_reminder">Create Reminder</string>
+    <string name="add_time_reminder">Add Time Reminder</string>
+    <string name="add_location_reminder">Add location reminder</string>
+    <string name="add_meeting_remimder">Add meeting reminder</string>
+    <string name="fab_menu__content_description">Pick type of reminder to be added from above options</string>
+    <!-- App intro strings -->
+    <string name="app_introduction">Welcome to Smart Prompter!!\nWe are excited to have you here.
+                                    \n\nProceed further to know more about our app.</string>
+    <string name="location_intro_title">Location Reminder</string>
+    <string name="location_intro_desc">Set reminders based on your location!!\n\n
+                                       This helps to keep track of rare things that one might have to do
+                                       when at a particular location. Also you can link a contact
+                                       to the location and call or message them when we reach that location
+                                       (Like intimate loved ones when reached a destination)</string>
+    <string name="time_reminder_intro_title">Time Reminder</string>
+    <string name="time_intro_desc">Get reminded on scheduled time.\n\n
+                                   Set reminders for any time, with various frequency levels, give reminder note,
+                                   get notified at that time and never miss an important event in your daily busy
+                                   schedule.</string>
+    <string name="meeting_reminder_intro_title">Meeting Reminder</string>
+    <string name="meeting_intro_desc">Schedule your meetings with ease!!\n\n
+                                      Schedule your meeting, enter the date and time of the meeting, link the contact
+                                      number to the scheduled meeting, enter the notes, get notified on time and
+                                      attend the meeting.</string>
+    <string name="settings_intro_string">Customize the app to meet your requirements using settings</string>
+    <string name="history_intro_string">View your history and keep track of your events</string>
+    <string name="notification_intro_string">Set reminders in the app and get timely notifications</string>
+    <string name="reminder_title">Title (50 Chars Max)*</string>
+    <string name="reminder_description">Description (300 Chars Max)*</string>
+    <string name="set_priority">Set Priority</string>
+    <string name="high">High</string>
+    <string name="medium">Medium</string>
+    <string name="low">Low</string>
+    <string name="set_frequency">Set Frequency</string>
+    <string name="every_time">Every time</string>
+    <string name="next_time">Next time</string>
+    <string name="location_reminder_title">Location Reminder</string>
+    <string name="messages_title">Messages</string>
+    <string name="compose_message_hint">Compose message max 160 chars</string>
+    <string name="content_authority">com.ravisravan.capstone</string>
+    <string name="empty_message_list">No messages composed</string>
+    <string name="title_activity_add_reminder">Add Reminder</string>
+    <string name="start_end_dates_description">If start date is not selected, event reminder will start from today. If end date is not selected the event will be reminded for ever.</string>
+    <string name="charges_message">Charges apply as per your carrier offers.</string>
+    <string name="remind_to_call">Remind to call a contact</string>
+    <string name="remind_to_call_contact">Remind to call %1$s on %2$s.</string>
+    <string name="start_date">Start Date</string>
+    <string name="end_date">End Date</string>
+</resources>

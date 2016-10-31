@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardElevation="@dimen/card_elevation"
+    app:cardUseCompatPadding="true">
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="2"
+        android:padding="@dimen/text_input_layout_padding"
+        android:rowCount="3">
+
+        <TextView
+            android:id="@+id/tv_start_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_calendar"
+            android:drawablePadding="@dimen/text_input_layout_padding"
+            android:gravity="center_vertical"
+            android:text="@string/start_date"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:textColor="@color/primary_text" />
+
+        <TextView
+            android:id="@+id/tv_end_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:drawableLeft="@drawable/ic_calendar"
+            android:drawablePadding="@dimen/text_input_layout_padding"
+            android:gravity="center_vertical"
+            android:text="@string/end_date"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:textColor="@color/primary_text" />
+
+        <ImageView android:id="@+id/remove_start_date"
+            android:src="@drawable/ic_cancel_black_24dp"
+            android:padding="@dimen/text_input_layout_padding"
+            android:layout_gravity="left"/>
+
+        <ImageView android:id="@+id/remove_end_date"
+            android:src="@drawable/ic_cancel_black_24dp"
+            android:padding="@dimen/text_input_layout_padding"
+            android:layout_gravity="right"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="2"
+            android:paddingTop="@dimen/text_input_layout_padding"
+            android:text="@string/start_end_dates_description"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/secondary_text" />
+
+    </GridLayout>
+</android.support.v7.widget.CardView>

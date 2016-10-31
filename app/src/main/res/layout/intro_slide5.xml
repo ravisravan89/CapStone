@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_appintro_bg"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:drawableLeft="@drawable/ic_settings"
+        android:drawablePadding="@dimen/activity_horizontal_margin"
+        android:text="@string/settings_intro_string"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/intro_desc_textsize" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:drawableLeft="@drawable/ic_history"
+        android:drawablePadding="@dimen/activity_horizontal_margin"
+        android:text="@string/history_intro_string"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/intro_desc_textsize" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:drawableLeft="@drawable/ic_notified"
+        android:drawablePadding="@dimen/activity_horizontal_margin"
+        android:text="@string/notification_intro_string"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/intro_desc_textsize" />
+
+</LinearLayout>

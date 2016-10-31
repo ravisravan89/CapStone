@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:columnCount="1"
+    android:rowCount="4">
+
+    <TextView
+        android:id="@+id/tv_pick_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/text_input_layout_padding"
+        android:layout_row="0"
+        android:drawableLeft="@drawable/ic_location_reminder_unchecked"
+        android:drawablePadding="@dimen/text_input_layout_padding"
+        android:gravity="center_vertical"
+        android:lines="2"
+        android:paddingTop="@dimen/text_input_layout_padding"
+        android:text="Pick a location for reminder"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        android:textColor="@color/primary_text" />
+
+    <FrameLayout
+        android:id="@+id/map_frame"
+        android:layout_width="240dp"
+        android:layout_height="120dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/text_input_layout_padding"
+        android:layout_row="1"
+        android:visibility="gone">
+
+        <fragment
+            android:id="@+id/image_map"
+            class="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            map:liteMode="true" />
+    </FrameLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/text_input_layout_padding"
+        android:layout_row="2"
+        android:text="Set reminder for : "
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="@color/secondary_text" />
+
+
+    <RadioGroup
+        android:id="@+id/frequency_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_row="3"
+        android:checkedButton="@+id/frequency_once"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/frequency_always"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/every_time"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:textColor="@color/primary_text" />
+
+        <RadioButton
+            android:id="@+id/frequency_once"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_weight="1"
+            android:text="@string/next_time"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:textColor="@color/primary_text" />
+
+    </RadioGroup>
+
+</GridLayout>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--<color name="colorPrimary">#3F51B5</color>-->
+    <!--<color name="colorPrimaryDark">#303F9F</color>-->
+    <!--<color name="colorAccent">#FF4081</color>-->
+
+    <!-- Theme colors -->
+    <color name="colorPrimary">#03A9F4</color>
+    <color name="colorPrimaryDark">#0288D1</color>
+    <color name="primary_light">#B3E5FC</color>
+    <color name="colorAccent">#FF5722</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#757575</color>
+    <color name="icons">#FFFFFF</color>
+    <color name="divider">#BDBDBD</color>
+
+    <!-- FAB menu colors -->
+    <color name="color_fab_menu_normal">#E53935</color>
+    <color name="color_fab_pressed">#E57373</color>
+    <color name="color_fab_ripple">#FFEEDD</color>
+    <color name="color_fab_item_normal">#D32F2F</color>
+
+    <!-- App Introduction colors -->
+    <color name="color_appintro_bg">#01579B</color>
+
+    <!-- Side menu colors -->
+    <color name="color_header_grey">#777777</color>
+</resources>

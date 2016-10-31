@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UI.activities.LocationSelectionActivity">
+
+    <!--@dimen/text_input_layout_padding-->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/address_info_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="#BE000000"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_location_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:lines="1"
+                android:paddingLeft="@dimen/activity_vertical_margin"
+                android:paddingRight="@dimen/activity_vertical_margin"
+                android:paddingTop="@dimen/text_input_layout_padding"
+                android:textColor="@color/icons"
+                android:textSize="@dimen/menu_lable_text_size" />
+
+            <TextView
+                android:id="@+id/tv_latlng_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:lines="1"
+                android:paddingBottom="@dimen/text_input_layout_padding"
+                android:paddingLeft="@dimen/activity_vertical_margin"
+                android:paddingRight="@dimen/activity_vertical_margin"
+                android:paddingTop="@dimen/text_input_layout_padding"
+                android:textColor="@color/icons"
+                android:textSize="@dimen/text_input_lable" />
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/map_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/radius_seekbar"
+            android:layout_below="@+id/address_info_layout">
+
+            <fragment
+                android:id="@+id/map"
+                class="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_static_location_marker" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab_pick_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right|end"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_marginRight="@dimen/activity_vertical_margin"
+                android:src="@drawable/ic_pick_location_fab"
+                app:borderWidth="0dp"
+                app:elevation="@dimen/fab_elevation"
+                app:fabSize="normal"
+                app:pressedTranslationZ="@dimen/fab_press_elevation" />
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/seek_bar_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Radius in meters"
+            android:layout_above="@+id/radius_seekbar"
+            android:layout_alignParentBottom="true"
+            android:gravity="center_horizontal"
+            android:textColor="@color/secondary_text"
+            android:textSize="@dimen/tv_small_size"
+            android:padding="@dimen/text_input_layout_padding"/>
+
+        <SeekBar
+            android:id="@+id/radius_seekbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:max="100"
+            android:paddingBottom="@dimen/text_input_layout_padding"
+            android:paddingTop="@dimen/text_input_layout_padding"
+            android:thumb="@drawable/ic_thumb" />
+
+    </RelativeLayout>
+
+</FrameLayout>

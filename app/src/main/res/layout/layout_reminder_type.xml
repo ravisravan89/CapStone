@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardElevation="@dimen/card_elevation"
+    app:cardUseCompatPadding="true">
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="1"
+        android:padding="@dimen/text_input_layout_padding"
+        android:rowCount="2">
+
+        <RadioGroup
+            android:id="@+id/rg_reminer_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_row="0"
+            android:checkedButton="@+id/rb_location_reminder"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rb_time_reminder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_input_layout_padding"
+                android:layout_weight="1"
+                android:button="@drawable/time_reminder_selector"
+                android:ellipsize="end"
+                android:lines="2"
+                android:paddingLeft="@dimen/text_input_layout_padding"
+                android:text="Time Reminder"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:textColor="@color/primary_text" />
+
+            <RadioButton
+                android:id="@+id/rb_location_reminder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_input_layout_padding"
+                android:layout_weight="1"
+                android:button="@drawable/location_reminder_selector"
+                android:ellipsize="end"
+                android:lines="2"
+                android:paddingLeft="@dimen/text_input_layout_padding"
+                android:text="Location Reminder"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:textColor="@color/primary_text" />
+        </RadioGroup>
+
+        <include
+            android:id="@+id/location_reminder_view"
+            layout="@layout/layout_location_reminder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_row="1" />
+    </GridLayout>
+
+</android.support.v7.widget.CardView>

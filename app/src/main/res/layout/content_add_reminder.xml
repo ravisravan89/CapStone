@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:animateLayoutChanges="true"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.ravisravan.capstone.UI.activities.AddReminderActivity"
+    tools:showIn="@layout/activity_add_reminder">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/activity_vertical_margin"
+        android:paddingRight="@dimen/activity_vertical_margin">
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/ttl_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/text_input_layout_padding"
+            android:background="@color/primary_light"
+            android:padding="@dimen/text_input_layout_padding"
+            app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/et_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:gravity="top"
+                android:hint="@string/reminder_title"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:lines="1"
+                android:maxLength="50"
+                android:padding="@dimen/text_input_layout_padding"
+                android:textColor="@color/color_appintro_bg"
+                android:textColorHint="@color/colorAccent"
+                android:textSize="@dimen/edittext_size" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/ttl_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/text_input_layout_padding"
+            android:background="@color/primary_light"
+            android:padding="5dp"
+            app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/et_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:gravity="top"
+                android:hint="@string/reminder_description"
+                android:maxLength="300"
+                android:padding="@dimen/text_input_layout_padding"
+                android:textColor="@color/color_appintro_bg"
+                android:textColorHint="@color/colorAccent"
+                android:textSize="@dimen/edittext_size" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <include
+            layout="@layout/start_end_date_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <include
+            layout="@layout/call_message_contact_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <include
+            android:id="@+id/compose_message_view"
+            layout="@layout/message_compose_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
+
+        <include
+            layout="@layout/layout_reminder_type"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+</ScrollView>

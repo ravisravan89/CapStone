@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/priority_group"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:checkedButton="@+id/priority_high"
+    android:orientation="horizontal">
+
+    <RadioButton
+        android:id="@+id/priority_high"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/high"
+        android:textColor="@color/secondary_text" />
+
+    <RadioButton
+        android:id="@+id/priority_medium"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/medium"
+        android:textColor="@color/secondary_text" />
+
+    <RadioButton
+        android:id="@+id/priority_low"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/low"
+        android:textColor="@color/secondary_text" />
+
+</RadioGroup>

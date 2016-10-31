@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/activity_vertical_margin"
+        android:paddingRight="@dimen/activity_vertical_margin">
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/ttl_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:background="@color/primary_light"
+            android:padding="5dp"
+            app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/et_title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:gravity="top"
+                android:hint="@string/reminder_title"
+                android:padding="@dimen/text_input_layout_padding"
+                android:textColor="@color/color_appintro_bg"
+                android:textColorHint="@color/colorAccent"
+                android:textSize="@dimen/edittext_size" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/ttl_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/text_input_layout_padding"
+            android:background="@color/primary_light"
+            android:padding="5dp"
+            app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/et_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:gravity="top"
+                android:hint="@string/reminder_description"
+                android:padding="@dimen/text_input_layout_padding"
+                android:textColor="@color/color_appintro_bg"
+                android:textColorHint="@color/colorAccent"
+                android:textSize="@dimen/edittext_size" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/text_input_layout_padding"
+            android:layout_marginTop="@dimen/text_input_layout_padding"
+            android:text="@string/set_priority"
+            android:textColor="@color/primary_text" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/divider" />
+
+        <include
+            layout="@layout/prioroty_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</ScrollView>

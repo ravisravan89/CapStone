@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            layout="@layout/create_reminder_base"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/text_input_layout_padding"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="@dimen/activity_vertical_margin"
+            android:paddingRight="@dimen/activity_vertical_margin"
+            android:text="@string/set_frequency"
+            android:textColor="@color/primary_text" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/activity_vertical_margin"
+            android:layout_marginRight="@dimen/activity_vertical_margin"
+            android:background="@color/divider" />
+
+        <RadioGroup
+            android:id="@+id/frequency_group"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:checkedButton="@+id/frequency_once"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/activity_vertical_margin"
+            android:paddingRight="@dimen/activity_vertical_margin">
+
+            <RadioButton
+                android:id="@+id/frequency_always"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/every_time"
+                android:textColor="@color/secondary_text" />
+
+            <RadioButton
+                android:id="@+id/frequency_once"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/next_time"
+                android:textColor="@color/secondary_text" />
+
+        </RadioGroup>
+
+        <!--<com.google.android.gms.maps.MapView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="100dp"-->
+        <!--android:layout_marginTop="@dimen/activity_vertical_margin"></com.google.android.gms.maps.MapView>-->
+
+        <FrameLayout
+            android:id="@+id/map_frame"
+            android:layout_width="240dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/text_input_layout_padding"
+            android:visibility="gone">
+
+            <fragment
+                android:id="@+id/image_map"
+                class="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                map:liteMode="true" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/tv_pick_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/text_input_layout_padding"
+            android:drawableLeft="@drawable/ic_location_reminder_unchecked"
+            android:drawablePadding="@dimen/text_input_layout_padding"
+            android:gravity="center_vertical"
+            android:lines="2"
+            android:paddingLeft="@dimen/activity_vertical_margin"
+            android:paddingRight="@dimen/activity_vertical_margin"
+            android:paddingTop="@dimen/text_input_layout_padding"
+            android:text="Pick a location for reminder"
+            android:textColor="@color/secondary_text" />
+
+        <TextView
+            android:id="@+id/tv_link_call_contact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/text_input_layout_padding"
+            android:drawableLeft="@drawable/ic_call_contact_unchecked"
+            android:drawablePadding="@dimen/text_input_layout_padding"
+            android:gravity="center_vertical"
+            android:lines="2"
+            android:paddingLeft="@dimen/activity_vertical_margin"
+            android:paddingRight="@dimen/activity_vertical_margin"
+            android:paddingTop="@dimen/text_input_layout_padding"
+            android:text="Link contact for call"
+            android:textColor="@color/secondary_text" />
+
+        <TextView
+            android:id="@+id/tv_link_mesage_contact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/text_input_layout_padding"
+            android:drawableLeft="@drawable/ic_message_contact_unchecked"
+            android:drawablePadding="@dimen/text_input_layout_padding"
+            android:gravity="center_vertical"
+            android:lines="2"
+            android:paddingLeft="@dimen/activity_vertical_margin"
+            android:paddingRight="@dimen/activity_vertical_margin"
+            android:paddingTop="@dimen/text_input_layout_padding"
+            android:text="Link contacts for SMS"
+            android:textColor="@color/secondary_text" />
+
+        <com.wefika.flowlayout.FlowLayout
+            android:id="@+id/flow_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start|top"
+            android:paddingLeft="@dimen/activity_vertical_margin"
+            android:paddingRight="@dimen/activity_vertical_margin" />
+
+        <EditText
+            android:id="@+id/et_message_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/text_input_layout_padding"
+            android:drawablePadding="@dimen/text_input_layout_padding"
+            android:gravity="center_vertical"
+            android:hint="Enter text to be sent (160 chars max)"
+            android:maxLength="160"
+            android:paddingLeft="@dimen/activity_vertical_margin"
+            android:paddingRight="@dimen/activity_vertical_margin"
+            android:paddingTop="@dimen/text_input_layout_padding"
+            android:textColor="@color/secondary_text" />
+
+
+    </LinearLayout>
+
+</ScrollView>
