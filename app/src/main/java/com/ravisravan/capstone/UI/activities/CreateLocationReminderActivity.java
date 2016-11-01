@@ -76,7 +76,7 @@ public class CreateLocationReminderActivity extends AppCompatActivity implements
         setTitle(getString(R.string.location_reminder_title));
         mLocationReminder = new LocationReminder();
         mReminder = new Reminder();
-        mReminder.setType(Constants.REMINDER_LOCATION);
+        mReminder.setReminderType(Constants.REMINDER_LOCATION);
     }
 
     private void initialiseUIComponents() {
@@ -275,26 +275,26 @@ public class CreateLocationReminderActivity extends AppCompatActivity implements
             mReminder.setDescription(description);
         }
         int priority = priority_group.getCheckedRadioButtonId();
-        switch (priority) {
-            case R.id.priority_high:
-                mReminder.setPriority(Constants.PRIORITY_HIGH);
-                break;
-            case R.id.priority_medium:
-                mReminder.setPriority(Constants.PRIORITY_MEDIUM);
-                break;
-            case R.id.priority_low:
-                mReminder.setPriority(Constants.PRIORITY_LOW);
-                break;
-        }
-        int frequency = frequency_group.getCheckedRadioButtonId();
-        switch (frequency) {
-            case R.id.frequency_once:
-                mReminder.setFrequency(Constants.LOCATION_FREQUENCY_ONCE);
-                break;
-            case R.id.frequency_always:
-                mReminder.setFrequency(Constants.LOCATION_FREQUENCY_EVERYTIME);
-                break;
-        }
+//        switch (priority) {
+//            case R.id.priority_high:
+//                mReminder.setPriority(Constants.PRIORITY_HIGH);
+//                break;
+//            case R.id.priority_medium:
+//                mReminder.setPriority(Constants.PRIORITY_MEDIUM);
+//                break;
+//            case R.id.priority_low:
+//                mReminder.setPriority(Constants.PRIORITY_LOW);
+//                break;
+//        }
+//        int frequency = frequency_group.getCheckedRadioButtonId();
+//        switch (frequency) {
+//            case R.id.frequency_once:
+//                mReminder.setFrequency(Constants.LOCATION_FREQUENCY_ONCE);
+//                break;
+//            case R.id.frequency_always:
+//                mReminder.setFrequency(Constants.LOCATION_FREQUENCY_EVERYTIME);
+//                break;
+//        }
     }
 
     @Override

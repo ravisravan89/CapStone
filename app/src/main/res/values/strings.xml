@@ -10,7 +10,7 @@
     <string name="add_time_reminder">Add Time Reminder</string>
     <string name="add_location_reminder">Add location reminder</string>
     <string name="add_meeting_remimder">Add meeting reminder</string>
-    <string name="fab_menu__content_description">Pick type of reminder to be added from above options</string>
+    <string name="fab_menu__content_description">Pick reminderType of reminder to be added from above options</string>
     <!-- App intro strings -->
     <string name="app_introduction">Welcome to Smart Prompter!!\nWe are excited to have you here.
                                     \n\nProceed further to know more about our app.</string>
@@ -47,6 +47,7 @@
     <string name="compose_message_hint">Compose message max 160 chars</string>
     <string name="content_authority">com.ravisravan.capstone</string>
     <string name="empty_message_list">No messages composed</string>
+    <string name="empty_reminder_list">No reminders set</string>
     <string name="title_activity_add_reminder">Add Reminder</string>
     <string name="start_end_dates_description">If start date is not selected, event reminder will start from today. If end date is not selected the event will be reminded for ever.</string>
     <string name="charges_message">Charges apply as per your carrier offers.</string>
@@ -54,4 +55,5 @@
     <string name="remind_to_call_contact">Remind to call %1$s on %2$s.</string>
     <string name="start_date">Start Date</string>
     <string name="end_date">End Date</string>
+    <string name="title_activity_view_reminder">ViewReminderActivity</string>
 </resources>

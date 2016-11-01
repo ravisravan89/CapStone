@@ -4,15 +4,17 @@ import android.app.DatePickerDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,6 +22,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -34,13 +37,18 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.ravisravan.capstone.Constants.Constants;
 import com.ravisravan.capstone.Constants.ExtrasConstants;
 import com.ravisravan.capstone.R;
 import com.ravisravan.capstone.beans.LocationBean;
+import com.ravisravan.capstone.beans.Reminder;
+import com.ravisravan.capstone.data.ReminderContract;
+import com.ravisravan.capstone.data.RemindersDbHelper;
 import com.ravisravan.capstone.utils.NavigationUtils;
 import com.wefika.flowlayout.FlowLayout;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
@@ -48,19 +56,19 @@ import java.util.Locale;
 
 public class AddReminderActivity extends AppCompatActivity implements OnMapReadyCallback, View.OnClickListener {
 
-    int mRemainderId = -1;
+    long mReminderId = -1;
     private View compose_message_view;
     private CheckBox cb_auto_messages;
     private CheckBox cb_call_reminder;
     private final int PICK_LOCATION_REQUEST = 100;
     private final int CALL_CONTACT_REQUEST = 200;
     private final int MESSAGE_CONTACT_REQUEST = 300;
-    private ContentValues callContactContentValues;
     private HashSet<Uri> messageContactsList;
     private FlowLayout flow_layout;
     private TextView add_contact;
     private TextView tv_pick_location;
     private RadioGroup rg_reminer_type;
+    private RadioGroup rg_location_frequency;
     private View location_reminder_view;
     private LocationBean locationBean;
     private SupportMapFragment mapFragment;
@@ -76,9 +84,14 @@ public class AddReminderActivity extends AppCompatActivity implements OnMapReady
     private ImageView remove_end_date;
     private TextInputEditText et_title;
     private TextInputEditText et_description;
+    private EditText et_compose_message;
     private TextInputLayout ttl_title;
     private TextInputLayout ttl_description;
     private TextInputLayout ttl_compose_message;
+    private Reminder mReminder = new Reminder();
+    private Uri mCallContactUri;
+    private ContentValues callContactVals;
+    private ArrayList<ContentValues> messageContactVals;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +102,7 @@ public class AddReminderActivity extends AppCompatActivity implements OnMapReady
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         readExtras();
+        mReminder.setId(mReminderId);
         initialiseViews();
         addInteractionListeners();
     }
@@ -112,6 +126,8 @@ public class AddReminderActivity extends AppCompatActivity implements OnMapReady
         ttl_title = (TextInputLayout) findViewById(R.id.ttl_title);
         ttl_description = (TextInputLayout) findViewById(R.id.ttl_description);
         ttl_compose_message = (TextInputLayout) findViewById(R.id.ttl_compose_message);
+        et_compose_message = (EditText) findViewById(R.id.et_compose_message);
+        rg_location_frequency = (RadioGroup) findViewById(R.id.rg_location_frequency);
     }
 
     private void addInteractionListeners() {
@@ -152,6 +168,7 @@ public class AddReminderActivity extends AppCompatActivity implements OnMapReady
                 }
             }
         });
+
     }
 
     private void setStartDate() {
@@ -177,6 +194,7 @@ public class AddReminderActivity extends AppCompatActivity implements OnMapReady
                 SimpleDateFormat sdf = new SimpleDateFormat("EEE,dd MMM yyyy", Locale.getDefault());
                 String displayDate = sdf.format(selectedDate);
                 textView.setText(displayDate);
+                textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_calendar_selected, 0, 0, 0);
             }
 
         }, year, month, day);
@@ -210,7 +228,7 @@ public class AddReminderActivity extends AppCompatActivity implements OnMapReady
 
     private void readExtras() {
         if (getIntent().hasExtra(ExtrasConstants.REMINDER_ID)) {
-            mRemainderId = getIntent().getIntExtra(ExtrasConstants.REMINDER_ID, -1);
+            mReminderId = getIntent().getLongExtra(ExtrasConstants.REMINDER_ID, -1L);
         }
     }
 
@@ -230,17 +248,20 @@ public class AddReminderActivity extends AppCompatActivity implements OnMapReady
                     String cName = phones.getString(phones.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
                     switch (request) {
                         case CALL_CONTACT_REQUEST:
+                            if (callContactVals == null) {
+                                callContactVals = new ContentValues();
+                            }
                             String text = String.format(getString(R.string.remind_to_call_contact), cName, cNumber);
-                            if (callContactContentValues == null)
-                                callContactContentValues = new ContentValues();
-                            //callContactContentValues.put(); //id
-                            //callContactContentValues.put(); //name
-                            //callContactContentValues.put(); //number
+                            mCallContactUri = contactData;
                             cb_call_reminder.setText(text);
+                            callContactVals.put(ReminderContract.ContactsTable.COLUMN_ID, id);
+                            callContactVals.put(ReminderContract.ContactsTable.COLUMN_NAME, cName);
+                            callContactVals.put(ReminderContract.ContactsTable.COLUMN_PHONE_NUMBER, cNumber);
                             break;
                         case MESSAGE_CONTACT_REQUEST:
                             if (messageContactsList == null) {
                                 messageContactsList = new HashSet<Uri>();
+                                messageContactVals = new ArrayList<ContentValues>();
                             }
                             int previousContactSize = messageContactsList.size();
                             messageContactsList.add(contactData);
@@ -264,6 +285,11 @@ public class AddReminderActivity extends AppCompatActivity implements OnMapReady
                                     }
                                 });
                                 nameTV.setText(cName + "\n" + cNumber);
+                                ContentValues values = new ContentValues();
+                                values.put(ReminderContract.ContactsTable.COLUMN_ID, id);
+                                values.put(ReminderContract.ContactsTable.COLUMN_NAME, cName);
+                                values.put(ReminderContract.ContactsTable.COLUMN_PHONE_NUMBER, cNumber);
+                                messageContactVals.add(values);
                                 c.close();
                             }
                             break;
@@ -282,6 +308,7 @@ public class AddReminderActivity extends AppCompatActivity implements OnMapReady
     private void processPickLocationResult(Intent data) {
         locationBean = (LocationBean) data.getSerializableExtra(ExtrasConstants.SELECTED_LOCATION);
         tv_pick_location.setText(locationBean.getDisplayAddress());
+        tv_pick_location.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_location_reminder_checked, 0, 0, 0);
         if (mapFragment == null) {
             mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.image_map);
             mapFragment.getMapAsync(this);
@@ -302,7 +329,7 @@ public class AddReminderActivity extends AppCompatActivity implements OnMapReady
             switch (requestCode) {
                 case CALL_CONTACT_REQUEST:
                     processContactPickResult(data, CALL_CONTACT_REQUEST);
-                    if (callContactContentValues == null) {
+                    if (mCallContactUri == null) {
                         cb_call_reminder.setChecked(false);
                     }
                     break;
@@ -316,7 +343,7 @@ public class AddReminderActivity extends AppCompatActivity implements OnMapReady
         } else if (resultCode == RESULT_CANCELED) {
             switch (requestCode) {
                 case CALL_CONTACT_REQUEST:
-                    if (callContactContentValues == null)
+                    if (mCallContactUri == null)
                         cb_call_reminder.setChecked(false);
                     break;
             }
@@ -359,10 +386,12 @@ public class AddReminderActivity extends AppCompatActivity implements OnMapReady
             case R.id.remove_start_date:
                 startDate = null;
                 tv_start_date.setText(R.string.start_date);
+                tv_start_date.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_calendar, 0, 0, 0);
                 break;
             case R.id.remove_end_date:
                 endDate = null;
                 tv_end_date.setText(R.string.end_date);
+                tv_end_date.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_calendar, 0, 0, 0);
                 break;
         }
     }
@@ -377,13 +406,15 @@ public class AddReminderActivity extends AppCompatActivity implements OnMapReady
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_done) {
-            createReminderBean();
+            if (isValidReminder()) {
+                saveReminder();
+            }
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private boolean createReminderBean() {
+    private boolean isValidReminder() {
         String title = et_title.getText().toString();
         if (TextUtils.isEmpty(title)) {
             ttl_title.setErrorEnabled(true);
@@ -402,6 +433,151 @@ public class AddReminderActivity extends AppCompatActivity implements OnMapReady
             ttl_description.setErrorEnabled(false);
             ttl_description.setError(null);
         }
+        mReminder.setTitle(title);
+        mReminder.setDescription(description);
+        mReminder.setStartDatems(startDate == null ? today.getTimeInMillis() : startDate.getTimeInMillis());
+        mReminder.setEndDatems(endDate == null ? -1 : endDate.getTimeInMillis());
+        if (cb_call_reminder.isChecked()) {
+            if (mCallContactUri == null) {
+                Snackbar.make(findViewById(R.id.call_message_options_view), "Select a contact to call", Snackbar.LENGTH_SHORT).show();
+                return false;
+            } else {
+                mReminder.setCallContactUri(mCallContactUri);
+            }
+        } else {
+            mReminder.setCallContactUri(null);
+        }
+        String composedMessage = et_compose_message.getText().toString();
+        if (cb_auto_messages.isChecked()) {
+            if (TextUtils.isEmpty(composedMessage)) {
+                ttl_compose_message.setErrorEnabled(true);
+                ttl_compose_message.setError("Message is missing");
+                return false;
+            } else {
+                ttl_compose_message.setErrorEnabled(false);
+                ttl_compose_message.setError(null);
+            }
+            if (messageContactsList == null) {
+                Snackbar.make(findViewById(android.R.id.content), "Select contacts to send sms", Snackbar.LENGTH_SHORT).show();
+                return false;
+            }
+            if (messageContactsList.size() == 0) {
+                Snackbar.make(findViewById(android.R.id.content), "Select contact to send sms", Snackbar.LENGTH_SHORT).show();
+                return false;
+            }
+            mReminder.setMessageContactUris(messageContactsList);
+            mReminder.setMessageText(composedMessage);
+        } else {
+            mReminder.setMessageContactUris(null);
+            mReminder.setMessageText(null);
+        }
+        switch (rg_reminer_type.getCheckedRadioButtonId()) {
+            case R.id.rb_location_reminder:
+                mReminder.setReminderType(Constants.REMINDER_LOCATION);
+                break;
+            case R.id.rb_time_reminder:
+                mReminder.setReminderType(Constants.REMINDER_TIME);
+                break;
+        }
+        if (mReminder.getReminderType() == Constants.REMINDER_LOCATION) {
+            //TODO: set time bean to null
+            if (locationBean == null) {
+                Snackbar.make(findViewById(android.R.id.content), "Select a location to set reminder", Snackbar.LENGTH_LONG).show();
+                return false;
+            }
+            if (!locationBean.isInitialised()) {
+                Snackbar.make(findViewById(android.R.id.content), "Select a location to set reminder", Snackbar.LENGTH_LONG).show();
+                return false;
+            }
+            switch (rg_location_frequency.getCheckedRadioButtonId()) {
+                case R.id.rb_always:
+                    locationBean.setFrequency(Constants.LOCATION_FREQUENCY_EVERYTIME);
+                    break;
+                case R.id.rb_once:
+                    locationBean.setFrequency(Constants.LOCATION_FREQUENCY_ONCE);
+                    break;
+            }
+            mReminder.setLocationBean(locationBean);
+        } else {
+            //TODO: Set Time bean validatiions after class is created.
+            mReminder.setLocationBean(null);
+            mReminder.setReminderType(Constants.REMINDER_TIME);
+        }
+        //Tyoe is set in radio group checked change listener.
+        //time validations pending, frequency has to be set.
         return true;
+    }
+
+    private void saveReminder() {
+        //First insert contacts in the db and get their ID.
+        Snackbar.make(findViewById(android.R.id.content), "Saving Reminder ", Snackbar.LENGTH_LONG).show();
+
+        ContentValues remindersValue = new ContentValues();
+        if (cb_call_reminder.isChecked()) {
+            if (callContactVals != null) {
+                remindersValue.put(ReminderContract.Reminders.COLUMN_CALL_CONTACTID, (String) callContactVals.get(ReminderContract.ContactsTable.COLUMN_ID));
+                try {
+                    getContentResolver().insert(ReminderContract.ContactsTable.CONTENT_URI, callContactVals);
+                } catch (SQLException e) {
+                    //e.printStackTrace();
+                } catch (UnsupportedOperationException e) {
+
+                }
+            } else {
+                Snackbar.make(findViewById(android.R.id.content), "Internal Error please retry. ", Snackbar.LENGTH_SHORT).show();
+                return;
+            }
+        }
+        if (cb_auto_messages.isChecked()) {
+            if (messageContactVals != null) {
+                remindersValue.put(ReminderContract.Reminders.COLUMN_MESSAGE_TEXT, et_compose_message.getText().toString());
+                for (ContentValues value : messageContactVals) {
+                    try {
+                        getContentResolver().insert(ReminderContract.ContactsTable.CONTENT_URI, value);
+                    } catch (SQLException e) {
+
+                    } catch (UnsupportedOperationException e) {
+
+                    }
+                }
+            } else {
+                Snackbar.make(findViewById(android.R.id.content), "Internal Error please retry. ", Snackbar.LENGTH_SHORT).show();
+                return;
+            }
+        }
+        remindersValue.put(ReminderContract.Reminders.COLUMN_TITLE, mReminder.getTitle());
+        remindersValue.put(ReminderContract.Reminders.COLUMN_DESCRIPTION, mReminder.getDescription());
+        remindersValue.put(ReminderContract.Reminders.COLUMN_START_DATE, mReminder.getStartDatems());
+        remindersValue.put(ReminderContract.Reminders.COLUMN_END_DATE, mReminder.getEndDatems());
+        remindersValue.put(ReminderContract.Reminders.COLUMN_CREATED_DATE, today.getTimeInMillis());
+        remindersValue.put(ReminderContract.Reminders.COLUMN_REMINDER_TYPE, mReminder.getReminderType());
+        try {
+            Uri insertedReminderUri = getContentResolver().insert(ReminderContract.Reminders.CONTENT_URI, remindersValue);
+            String reminderId = insertedReminderUri.getLastPathSegment();
+            //This part maps the contacts with reminders to send sms
+            RemindersDbHelper helper = new RemindersDbHelper(this);
+            if (cb_auto_messages.isChecked()) {
+                helper.updateReminderContactTable(reminderId, messageContactVals);
+            } else {
+                helper.removeMessagesForReminder(reminderId);
+            }
+            //location data in location table
+            ContentValues locationVals = new ContentValues(); // reminderId, lat, lng,  address, radius, frequency
+            locationVals.put(ReminderContract.LocationReminders.COLUMN_ID, reminderId);
+            locationVals.put(ReminderContract.LocationReminders.COLUMN_LAT, mReminder.getLocationBean().getLatitude());
+            locationVals.put(ReminderContract.LocationReminders.COLUMN_LNG, mReminder.getLocationBean().getLongitude());
+            locationVals.put(ReminderContract.LocationReminders.COLUMN_ADDRESS, mReminder.getLocationBean().getDisplayAddress());
+            locationVals.put(ReminderContract.LocationReminders.COLUMN_RADIUS, mReminder.getLocationBean().getRadiusInMeters());
+            locationVals.put(ReminderContract.LocationReminders.COLUMN_FREQUENCY, mReminder.getLocationBean().getFrequency());
+            Uri insertedLocationReminderUri = getContentResolver().insert(ReminderContract.LocationReminders.CONTENT_URI, locationVals);
+            String locationreminderId = insertedLocationReminderUri.getLastPathSegment();
+            Log.e("Reminder id ", reminderId);
+            Log.e("locationreminderId", locationreminderId);
+            finish();
+        } catch (SQLException e) {
+
+        } catch (UnsupportedOperationException e) {
+
+        }
     }
 }

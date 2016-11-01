@@ -8,10 +8,6 @@ public class Constants {
     public static final int CIRCLE_MINIMUM_RADIUS = 100;
     public static final int CIRCLE_STROKE_WIDTH = 3;
 
-    public static final int PRIORITY_HIGH = 3;
-    public static final int PRIORITY_MEDIUM = 2;
-    public static final int PRIORITY_LOW = 1;
-
     public static final int REMINDER_LOCATION = 1;
     public static final int REMINDER_TIME = 2;
 

@@ -13,6 +13,6 @@
     <!--android:centerColor="#FF0000FF"-->
     <!--android:endColor="#FF00FF00"-->
     <!--android:startColor="#FFFF0000"-->
-    <!--android:type="sweep" />-->
+    <!--android:reminderType="sweep" />-->
 
 </shape>

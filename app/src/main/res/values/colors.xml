@@ -25,4 +25,5 @@
 
     <!-- Side menu colors -->
     <color name="color_header_grey">#777777</color>
+    <color name="color_grey">#DEDEDE</color>
 </resources>

@@ -20,7 +20,7 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="your id here" />
+            android:value="your api key here" />
 
         <activity
             android:name=".UI.activities.AllEventsActivity"
@@ -46,7 +46,6 @@
             android:name=".UI.activities.LocationSelectionActivity"
             android:parentActivityName=".UI.activities.CreateLocationReminderActivity" />
         <activity android:name=".UI.activities.MessagesActivity" />
-
         <activity
             android:name=".UI.activities.AddReminderActivity"
             android:label="@string/title_activity_add_reminder"
@@ -58,6 +57,11 @@
             android:authorities="@string/content_authority"
             android:exported="false"
             android:syncable="false" />
+
+        <activity
+            android:name=".UI.activities.ViewReminderActivity"
+            android:label="@string/title_activity_view_reminder"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

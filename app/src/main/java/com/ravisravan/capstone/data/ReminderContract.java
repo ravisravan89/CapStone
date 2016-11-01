@@ -27,38 +27,57 @@ public class ReminderContract {
     // looking at messages data. content://com.ravisravan.capstone/xyz/ will fail,
     // as the ContentProvider hasn't been given any information on what to do with "xyz".
     public static final String PATH_MESSAGES = "messages";
+    public static final String PATH_CONTACTS = "contacts";
+    public static final String PATH_REMINDERS = "reminders";
+    public static final String PATH_LOCATION = "location";
 
     /* Inner class that defines the table contents of the reminder table */
     public static final class Reminders implements BaseColumns {
+        public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE
+                + "/" + CONTENT_AUTHORITY + "/" + PATH_REMINDERS;
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_REMINDERS;
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_REMINDERS).build();
         //Table Name
         public static final String TABLE_NAME = "reminders";
         //Column names
         public static final String COLUMN_TITLE = "title";
         public static final String COLUMN_DESCRIPTION = "description";
-        public static final String COLUMN_PRIORITY = "priority"; //High 2 medium 1 low 0
         public static final String COLUMN_REMINDER_TYPE = "reminder_type"; //location 1 time 2
         public static final String COLUMN_STATE = "state"; //active 1 inactive 2
         public static final String COLUMN_CREATED_DATE = "create_date";
         public static final String COLUMN_START_DATE = "start_date";
         public static final String COLUMN_END_DATE = "end_date";
-        public static final String COLUMN_CALL_ENABLED = "call_enabled";
-        public static final String COLUMN_MESSAGE_ENABLED = "message_enabled";
+        public static final String COLUMN_CALL_CONTACTID = "call_contact_id";
+        public static final String COLUMN_MESSAGE_TEXT = "message_text";
         protected static String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + " (" +
                 _ID + " INTEGER PRIMARY KEY," +
-                COLUMN_TITLE + " TEXT UNIQUE NOT NULL, " +
+                COLUMN_TITLE + " TEXT NOT NULL, " +
                 COLUMN_DESCRIPTION + " TEXT NOT NULL, " +
-                COLUMN_PRIORITY + " INTEGER NOT NULL, " + //0 low 1 medium 2 hign
-                COLUMN_REMINDER_TYPE + " INTEGER NOT NULL " + // 1 location 2 time
-                COLUMN_STATE + " INTEGER NOT NULL " + // 1 active 0 inactive
-                COLUMN_CREATED_DATE + " INTEGER NOT NULL " +
-                COLUMN_START_DATE + " INTEGER NOT NULL " +
-                COLUMN_END_DATE + " INTEGER DEFAULT -1 " + //if -1 means its for ever
-                COLUMN_CALL_ENABLED + " INTEGER DEFAULT 0 " + //0 - call not enabled, 1 call enabled
-                COLUMN_MESSAGE_ENABLED + " INTEGER DEFAULT 0 " + //0 - message not enabled, 1 message enabled
+                COLUMN_REMINDER_TYPE + " INTEGER NOT NULL, " + // 1 location 2 time
+                COLUMN_STATE + " INTEGER DEFAULT 1, " + // 1 active 0 inactive
+                COLUMN_CREATED_DATE + " INTEGER NOT NULL, " +
+                COLUMN_START_DATE + " INTEGER NOT NULL, " +
+                COLUMN_END_DATE + " INTEGER DEFAULT -1, " + //if -1 means its for ever
+                COLUMN_CALL_CONTACTID + " TEXT,  " + //0 - call not enabled, 1 call enabled
+                COLUMN_MESSAGE_TEXT + " TEXT, " +
+                " FOREIGN KEY (" + COLUMN_CALL_CONTACTID + ") REFERENCES " +
+                ContactsTable.TABLE_NAME + " (" + ContactsTable.COLUMN_ID + ") " +
                 " );";
+
+        public static Uri buildReminderUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
     }
 
     public static final class LocationReminders implements BaseColumns {
+        public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE
+                + "/" + CONTENT_AUTHORITY + "/" + PATH_LOCATION;
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_LOCATION;
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_LOCATION).build();
         //Table Name
         public static final String TABLE_NAME = "location_reminders";
         //Column names
@@ -74,8 +93,8 @@ public class ReminderContract {
                 COLUMN_LAT + " REAL NOT NULL, " +
                 COLUMN_LNG + " REAL NOT NULL, " +
                 COLUMN_ADDRESS + " TEXT NOT NULL, " +
-                COLUMN_RADIUS + " INTEGER NOT NULL " +
-                COLUMN_FREQUENCY + " INTEGER NOT NULL " + //frequency is Every time = 2, next time = 1
+                COLUMN_RADIUS + " REAL NOT NULL, " +
+                COLUMN_FREQUENCY + " INTEGER NOT NULL, " + //frequency is Every time = 2, next time = 1
                 // Set up the remainder_id column as a foreign key to Reminders table.
                 " FOREIGN KEY (" + COLUMN_ID + ") REFERENCES " +
                 Reminders.TABLE_NAME + " (" + Reminders._ID + "), " +
@@ -83,9 +102,22 @@ public class ReminderContract {
                 // reminder id, it's created a UNIQUE constraint with REPLACE strategy
                 " UNIQUE (" + COLUMN_ID + ") ON CONFLICT REPLACE " +
                 " );";
+
+        public static Uri buildLocationReminderUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
     }
 
+    /**
+     * We only use the stored name and number if the contact is deleted from the device.
+     */
     public static final class ContactsTable implements BaseColumns {
+        public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE
+                + "/" + CONTENT_AUTHORITY + "/" + PATH_CONTACTS;
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_CONTACTS;
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_CONTACTS).build();
         //Table Name
         public static final String TABLE_NAME = "contacts";
         //Column names
@@ -94,10 +126,14 @@ public class ReminderContract {
         public static final String COLUMN_PHONE_NUMBER = "phone_number";
         protected static String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + " (" +
                 _ID + " INTEGER PRIMARY KEY," +
-                COLUMN_ID + " INTEGER UNIQUE NOT NULL, " +
+                COLUMN_ID + " TEXT UNIQUE , " +
                 COLUMN_NAME + " TEXT NOT NULL, " +
-                COLUMN_PHONE_NUMBER + " TEXT NOT NULL, " +
+                COLUMN_PHONE_NUMBER + " TEXT NOT NULL " +
                 " );";
+
+        public static Uri buildContactUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
     }
 
     public static final class CallContact_able implements BaseColumns {
@@ -140,18 +176,16 @@ public class ReminderContract {
         }
     }
 
-    public static final class MessageContactTable implements BaseColumns {
+    public static final class ReminderContactTable implements BaseColumns {
         //Table Name
-        public static final String TABLE_NAME = "message_contact";
+        public static final String TABLE_NAME = "reminder_contact";
         //Column names
         public static final String COLUMN_REMINDER_ID = "reminder_id";
         public static final String COLUMN_CONTACT_ID = "contact_id";
-        public static final String COLUMN_MESSAGE_ID = "message_id";
         protected static String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + " (" +
                 _ID + " INTEGER PRIMARY KEY," +
                 COLUMN_REMINDER_ID + " INTEGER NOT NULL, " +
-                COLUMN_CONTACT_ID + " INTEGER NOT NULL, " +
-                COLUMN_MESSAGE_ID + " INTEGER NOT NULL " +
+                COLUMN_CONTACT_ID + " TEXT NOT NULL , " +
                 // Set up the remainder_id column as a foreign key to Reminders table.
                 " FOREIGN KEY (" + COLUMN_REMINDER_ID + ") REFERENCES " +
                 Reminders.TABLE_NAME + " (" + Reminders._ID + "), " +

@@ -1,5 +1,7 @@
 package com.ravisravan.capstone.beans;
 
+import com.ravisravan.capstone.Constants.Constants;
+
 import java.io.Serializable;
 
 /**
@@ -9,9 +11,11 @@ public class LocationBean implements Serializable {
 
     private double latitude;
     private double longitude;
-    private int radiusInMeters;
+    private double radiusInMeters;
     private String displayAddress;
     private boolean isInitialised;
+
+    private int frequency = Constants.LOCATION_FREQUENCY_ONCE;
 
     public double getLatitude() {
         return latitude;
@@ -29,11 +33,11 @@ public class LocationBean implements Serializable {
         this.longitude = longitude;
     }
 
-    public int getRadiusInMeters() {
+    public double getRadiusInMeters() {
         return radiusInMeters;
     }
 
-    public void setRadiusInMeters(int radiusInMeters) {
+    public void setRadiusInMeters(double radiusInMeters) {
         this.radiusInMeters = radiusInMeters;
     }
 
@@ -51,5 +55,13 @@ public class LocationBean implements Serializable {
 
     public void setInitialised(boolean initialised) {
         isInitialised = initialised;
+    }
+
+    public int getFrequency() {
+        return frequency;
+    }
+
+    public void setFrequency(int frequency) {
+        this.frequency = frequency;
     }
 }

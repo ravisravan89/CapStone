@@ -2,6 +2,8 @@ package com.ravisravan.capstone.beans;
 
 import android.net.Uri;
 
+import com.ravisravan.capstone.Constants.Constants;
+
 import java.io.Serializable;
 import java.util.HashSet;
 
@@ -10,13 +12,24 @@ import java.util.HashSet;
  */
 public class Reminder implements Serializable {
 
+    private long id;
     private String title;
     private String description;
-    private int priority;
-    private int type;
-    private int frequency;
+    private int reminderType;
     private Uri callContactUri;
     private HashSet<Uri> messageContactUris;
+    private long startDatems;
+    private long endDatems;
+    private LocationBean locationBean;
+    private String messageText;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;
@@ -34,28 +47,12 @@ public class Reminder implements Serializable {
         this.description = description;
     }
 
-    public int getPriority() {
-        return priority;
+    public int getReminderType() {
+        return reminderType;
     }
 
-    public void setPriority(int priority) {
-        this.priority = priority;
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
-    }
-
-    public int getFrequency() {
-        return frequency;
-    }
-
-    public void setFrequency(int frequency) {
-        this.frequency = frequency;
+    public void setReminderType(int reminderType) {
+        this.reminderType = reminderType;
     }
 
     public Uri getCallContactUri() {
@@ -74,4 +71,35 @@ public class Reminder implements Serializable {
         this.messageContactUris = messageContactUris;
     }
 
+    public long getStartDatems() {
+        return startDatems;
+    }
+
+    public void setStartDatems(long startDatems) {
+        this.startDatems = startDatems;
+    }
+
+    public long getEndDatems() {
+        return endDatems;
+    }
+
+    public void setEndDatems(long endDatems) {
+        this.endDatems = endDatems;
+    }
+
+    public String getMessageText() {
+        return messageText;
+    }
+
+    public void setMessageText(String messageText) {
+        this.messageText = messageText;
+    }
+
+    public LocationBean getLocationBean() {
+        return locationBean;
+    }
+
+    public void setLocationBean(LocationBean locationBean) {
+        this.locationBean = locationBean;
+    }
 }

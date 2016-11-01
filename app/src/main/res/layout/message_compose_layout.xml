@@ -29,8 +29,6 @@
                 android:background="@android:color/transparent"
                 android:gravity="top"
                 android:hint="Compose Message (160 Chars Max)*"
-                android:inputType="text"
-                android:lines="1"
                 android:maxLength="160"
                 android:padding="@dimen/text_input_layout_padding"
                 android:textColor="@color/color_appintro_bg"

@@ -17,6 +17,11 @@ public class RemindersProvider extends ContentProvider {
     private RemindersDbHelper mOpenHelper;
     static final int MESSAGES = 100;
     static final int MESSAGE = 101;
+    static final int CONTACTS = 200;
+    static final int CONTACT = 201;
+    static final int REMINDERS = 300;
+    static final int REMINDER = 301;
+    static final int LOCATION = 400;
 
     // The URI Matcher used by this content provider.
     private static final UriMatcher sUriMatcher = buildUriMatcher();
@@ -45,6 +50,16 @@ public class RemindersProvider extends ContentProvider {
                         null,
                         sortOrder
                 );
+                break;
+            }
+            case REMINDERS: {
+                retCursor = mOpenHelper.getReadableDatabase().query(ReminderContract.Reminders.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder);
                 break;
             }
             default:
@@ -78,6 +93,32 @@ public class RemindersProvider extends ContentProvider {
                 long _id = db.insert(ReminderContract.MessageLkpTable.TABLE_NAME, null, values);
                 if (_id > 0)
                     returnUri = ReminderContract.MessageLkpTable.buildMessageUri(_id);
+                else
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                break;
+            }
+            case CONTACTS: {
+                long _id = db.insert(ReminderContract.ContactsTable.TABLE_NAME, null, values);
+                if (_id > 0)
+                    returnUri = ReminderContract.ContactsTable.buildContactUri(_id);
+                else
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                break;
+            }
+            case REMINDERS: {
+                long _id = db.insert(ReminderContract.Reminders.TABLE_NAME, null, values);
+                if (_id > 0)
+                    returnUri = ReminderContract.Reminders.buildReminderUri(_id);
+                else
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                break;
+            }
+            case LOCATION: {
+                long _id = db.insert(ReminderContract.LocationReminders.TABLE_NAME, null, values);
+                //TODO: we have to test if we need to return reminder id or locaiton reminder Id
+                //Also we need to notify the uri for reminder that is using this data. when it is updated
+                if (_id > 0)
+                    returnUri = ReminderContract.LocationReminders.buildLocationReminderUri(_id);
                 else
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 break;
@@ -141,6 +182,14 @@ public class RemindersProvider extends ContentProvider {
         // For each type of URI you want to add, create a corresponding code.
         matcher.addURI(authority, ReminderContract.PATH_MESSAGES, MESSAGES);
         matcher.addURI(authority, ReminderContract.PATH_MESSAGES + "/#", MESSAGE);
+
+        matcher.addURI(authority, ReminderContract.PATH_CONTACTS, CONTACTS);
+        matcher.addURI(authority, ReminderContract.PATH_CONTACTS + "/#", CONTACT);
+
+        matcher.addURI(authority, ReminderContract.PATH_REMINDERS, REMINDERS);
+        matcher.addURI(authority, ReminderContract.PATH_REMINDERS + "/#", REMINDER);
+
+        matcher.addURI(authority, ReminderContract.PATH_LOCATION, LOCATION);
         return matcher;
     }
 }

@@ -5,7 +5,7 @@
         <!--android:centerColor="#4CAF50"-->
         <!--android:endColor="#2E7D32"-->
         <!--android:startColor="#81C784"-->
-        <!--android:type="linear" />-->
+        <!--android:reminderType="linear" />-->
 
     <gradient
         android:angle="135"

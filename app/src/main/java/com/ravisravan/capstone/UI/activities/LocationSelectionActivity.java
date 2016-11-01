@@ -118,7 +118,7 @@ public class LocationSelectionActivity extends AppCompatActivity implements OnMa
                 selectedLocation.setLongitude(currentLatLng.longitude);
                 selectedLocation.setDisplayAddress(displayAddress);
                 //TODO: remove static variable.
-                selectedLocation.setRadiusInMeters(100);
+                selectedLocation.setRadiusInMeters(mCircle.getRadius());
                 selectedLocation.setInitialised(true);
                 returnIntent.putExtra(ExtrasConstants.SELECTED_LOCATION, selectedLocation);
                 setResult(RESULT_OK, returnIntent);

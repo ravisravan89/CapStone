@@ -198,8 +198,9 @@ public class MessagesActivity extends AppCompatActivity implements LoaderManager
             public boolean onPreDraw() {
                 // Since we know we're going to get items, we keep the listener around until
                 // we see Children.
+                recyclerview_messages.getViewTreeObserver().removeOnPreDrawListener(this);
                 if (recyclerview_messages.getChildCount() > 0) {
-                    recyclerview_messages.getViewTreeObserver().removeOnPreDrawListener(this);
+
                     int position = 0;
                     if (isNewMessageAdded) {
                         isNewMessageAdded = false;

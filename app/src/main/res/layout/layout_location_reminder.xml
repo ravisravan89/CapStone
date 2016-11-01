@@ -50,15 +50,15 @@
 
 
     <RadioGroup
-        android:id="@+id/frequency_group"
+        android:id="@+id/rg_location_frequency"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_row="3"
-        android:checkedButton="@+id/frequency_once"
+        android:checkedButton="@+id/rb_once"
         android:orientation="horizontal">
 
         <RadioButton
-            android:id="@+id/frequency_always"
+            android:id="@+id/rb_always"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -67,7 +67,7 @@
             android:textColor="@color/primary_text" />
 
         <RadioButton
-            android:id="@+id/frequency_once"
+            android:id="@+id/rb_once"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
