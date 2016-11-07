@@ -112,7 +112,6 @@ public class AllEventsActivity extends AppCompatActivity
 
     private void showAddReminderPage() {
         Intent intent = new Intent(AllEventsActivity.this, AddReminderActivity.class);
-        intent.putExtra(ExtrasConstants.REMINDER_ID, -1L);
         startActivity(intent);
     }
 

@@ -7,6 +7,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.util.Log;
+
+import com.ravisravan.capstone.Constants.Constants;
 
 /**
  * Created by ravisravankumar on 22/10/16.
@@ -152,6 +155,12 @@ public class RemindersProvider extends ContentProvider {
                 rowsDeleted = db.delete(
                         ReminderContract.MessageLkpTable.TABLE_NAME, selection, selectionArgs);
                 break;
+            case REMINDERS:
+                //to delete a remainde we also have to delete corresponding data in other tables as well.
+                //query and get the type of reminder.
+                deleteRelatedDataInOtherTables(selectionArgs, db);
+                rowsDeleted = db.delete(ReminderContract.Reminders.TABLE_NAME, selection, selectionArgs);
+                break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -160,6 +169,27 @@ public class RemindersProvider extends ContentProvider {
             getContext().getContentResolver().notifyChange(uri, null);
         }
         return rowsDeleted;
+    }
+
+    private void deleteRelatedDataInOtherTables(String[] selectionArgs, SQLiteDatabase db) {
+        Cursor reminderCursor = db.query(ReminderContract.Reminders.TABLE_NAME,
+                new String[]{ReminderContract.Reminders.COLUMN_REMINDER_TYPE},
+                ReminderContract.Reminders._ID + " = ? ", selectionArgs, null, null, null);
+        reminderCursor.moveToNext();
+        int reminderType = reminderCursor.getInt(reminderCursor.getColumnIndex(ReminderContract.Reminders.COLUMN_REMINDER_TYPE));
+        int rows = 0;
+        if (reminderType == Constants.REMINDER_LOCATION) {
+            //delete corresponding data in location reminder table
+            rows = db.delete(ReminderContract.LocationReminders.TABLE_NAME, ReminderContract.LocationReminders.COLUMN_ID + " = ?", selectionArgs);
+            Log.e("LocationReminderDeleted", ""+rows);
+        } else {
+            //TODO: delete corresponding data in time reminder table
+        }
+        //then commonly delete the contacts mapping to this reminder.
+        if (rows > 0) {
+            int deletedContacts = db.delete(ReminderContract.ReminderContactTable.TABLE_NAME, ReminderContract.ReminderContactTable.COLUMN_REMINDER_ID + " = ?", selectionArgs);
+            Log.e("deletedContacts", ""+deletedContacts);
+        }
     }
 
     @Override

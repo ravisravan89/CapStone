@@ -16,12 +16,13 @@ public class Reminder implements Serializable {
     private String title;
     private String description;
     private int reminderType;
-    private Uri callContactUri;
-    private HashSet<Uri> messageContactUris;
+    private String callContactUri;
+    private HashSet<String> messageContactUris;
     private long startDatems;
     private long endDatems;
     private LocationBean locationBean;
     private String messageText;
+    private long createDatems;
 
     public long getId() {
         return id;
@@ -55,19 +56,19 @@ public class Reminder implements Serializable {
         this.reminderType = reminderType;
     }
 
-    public Uri getCallContactUri() {
+    public String getCallContactUri() {
         return callContactUri;
     }
 
-    public void setCallContactUri(Uri callContactUri) {
+    public void setCallContactUri(String callContactUri) {
         this.callContactUri = callContactUri;
     }
 
-    public HashSet<Uri> getMessageContactUris() {
+    public HashSet<String> getMessageContactUris() {
         return messageContactUris;
     }
 
-    public void setMessageContactUris(HashSet<Uri> messageContactUris) {
+    public void setMessageContactUris(HashSet<String> messageContactUris) {
         this.messageContactUris = messageContactUris;
     }
 
@@ -101,5 +102,13 @@ public class Reminder implements Serializable {
 
     public void setLocationBean(LocationBean locationBean) {
         this.locationBean = locationBean;
+    }
+
+    public void setCreateDatems(long createDatems) {
+        this.createDatems = createDatems;
+    }
+
+    public long getCreateDatems() {
+        return createDatems;
     }
 }

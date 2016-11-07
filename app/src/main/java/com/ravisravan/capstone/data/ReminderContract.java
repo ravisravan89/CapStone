@@ -136,23 +136,23 @@ public class ReminderContract {
         }
     }
 
-    public static final class CallContact_able implements BaseColumns {
-        //Table Name
-        public static final String TABLE_NAME = "call_contact";
-        //Column names
-        public static final String COLUMN_REMINDER_ID = "reminder_id";
-        public static final String COLUMN_CONTACT_ID = "contact_id";
-        protected static String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + " (" +
-                _ID + " INTEGER PRIMARY KEY," +
-                COLUMN_REMINDER_ID + " INTEGER NOT NULL, " +
-                COLUMN_CONTACT_ID + " INTEGER NOT NULL, " +
-                // Set up the remainder_id column as a foreign key to Reminders table.
-                " FOREIGN KEY (" + COLUMN_REMINDER_ID + ") REFERENCES " +
-                Reminders.TABLE_NAME + " (" + Reminders._ID + "), " +
-                " FOREIGN KEY (" + COLUMN_CONTACT_ID + ") REFERENCES " +
-                ContactsTable.TABLE_NAME + " (" + ContactsTable.COLUMN_ID + ") " +
-                " );";
-    }
+//    public static final class CallContact_able implements BaseColumns {
+//        //Table Name
+//        public static final String TABLE_NAME = "call_contact";
+//        //Column names
+//        public static final String COLUMN_REMINDER_ID = "reminder_id";
+//        public static final String COLUMN_CONTACT_ID = "contact_id";
+//        protected static String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + " (" +
+//                _ID + " INTEGER PRIMARY KEY," +
+//                COLUMN_REMINDER_ID + " INTEGER NOT NULL, " +
+//                COLUMN_CONTACT_ID + " INTEGER NOT NULL, " +
+//                // Set up the remainder_id column as a foreign key to Reminders table.
+//                " FOREIGN KEY (" + COLUMN_REMINDER_ID + ") REFERENCES " +
+//                Reminders.TABLE_NAME + " (" + Reminders._ID + "), " +
+//                " FOREIGN KEY (" + COLUMN_CONTACT_ID + ") REFERENCES " +
+//                ContactsTable.TABLE_NAME + " (" + ContactsTable.COLUMN_ID + ") " +
+//                " );";
+//    }
 
     public static final class MessageLkpTable implements BaseColumns {
         public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE

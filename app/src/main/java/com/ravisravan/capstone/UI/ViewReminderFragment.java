@@ -1,19 +1,27 @@
 package com.ravisravan.capstone.UI;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -30,12 +38,18 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.ravisravan.capstone.Constants.Constants;
 import com.ravisravan.capstone.Constants.ExtrasConstants;
 import com.ravisravan.capstone.R;
+import com.ravisravan.capstone.UI.activities.AddReminderActivity;
 import com.ravisravan.capstone.UI.activities.LocationSelectionActivity;
+import com.ravisravan.capstone.UI.activities.ViewReminderActivity;
 import com.ravisravan.capstone.beans.LocationBean;
+import com.ravisravan.capstone.beans.Reminder;
 import com.ravisravan.capstone.data.ReminderContract;
 import com.ravisravan.capstone.data.RemindersDbHelper;
 import com.ravisravan.capstone.utils.Utils;
 import com.wefika.flowlayout.FlowLayout;
+
+import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,9 +61,11 @@ public class ViewReminderFragment extends Fragment implements LoaderManager.Load
     //    private OnFragmentInteractionListener mListener;
     private Uri mUri;
     private final int REMINDER_DETAILS = 300;
+    Reminder mReminder = new Reminder();
 
     public ViewReminderFragment() {
         // Required empty public constructor
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -94,6 +110,61 @@ public class ViewReminderFragment extends Fragment implements LoaderManager.Load
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                getActivity().finish();
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                    getActivity().finishAfterTransition();
+//                }
+                return true;
+            case R.id.action_edit:
+                Intent intent = new Intent(getActivity(), AddReminderActivity.class);
+                intent.putExtra(ExtrasConstants.REMINDER_BEAN,mReminder);
+                startActivity(intent);
+                return true;
+            case R.id.action_delete:
+                showDeleteWorningAlert();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void showDeleteWorningAlert() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Delete Reminder");
+        builder.setMessage("Are you sure you want to delete the reminder ?");
+        builder.setPositiveButton("DELETE", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                int rowsDeleted = getActivity().getContentResolver().delete(ReminderContract.Reminders.CONTENT_URI, ReminderContract.Reminders._ID + " = ?", new String[]{mUri.getLastPathSegment()});
+                if (rowsDeleted > 0) {
+                    getActivity().finish();
+                } else {
+                    Snackbar.make(getView(), "Could not delete the reminder", Snackbar.LENGTH_SHORT);
+                }
+                dialogInterface.dismiss();
+            }
+        });
+        builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        builder.show();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if (getActivity() instanceof ViewReminderActivity) {
+            // Inflate the menu; this adds items to the action bar if it is present.
+            inflater.inflate(R.menu.menu_details_fragment, menu);
+            //finishCreatingMenu(menu);
+        }
+    }
+
+    @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (null != mUri) {
             // Now create and return a CursorLoader that will take care of
@@ -118,18 +189,21 @@ public class ViewReminderFragment extends Fragment implements LoaderManager.Load
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (data != null && data.moveToFirst()) {
             Log.e("Loaded", data.toString());
-
+            mReminder.setId(Long.valueOf(mUri.getLastPathSegment()));
             AppCompatActivity activity = (AppCompatActivity) getActivity();
             Toolbar toolbarView = (Toolbar) getView().findViewById(R.id.toolbar);
             String title = data.getString(data.getColumnIndex(ReminderContract.Reminders.COLUMN_TITLE));
             TextView tv_reminder_description = (TextView) getView().findViewById(R.id.tv_reminder_description);
             String description = data.getString(data.getColumnIndex(ReminderContract.Reminders.COLUMN_DESCRIPTION));
             tv_reminder_description.setText(description);
-
+            mReminder.setTitle(title);
+            mReminder.setDescription(description);
             long createDatems = data.getLong(data.getColumnIndex(ReminderContract.Reminders.COLUMN_CREATED_DATE));
+            mReminder.setCreateDatems(createDatems);
             long startDatems = data.getLong(data.getColumnIndex(ReminderContract.Reminders.COLUMN_START_DATE));
+            mReminder.setStartDatems(startDatems);
             long endDatems = data.getLong(data.getColumnIndex(ReminderContract.Reminders.COLUMN_END_DATE));
-
+            mReminder.setEndDatems(endDatems);
             TextView tv_create_date = (TextView) getView().findViewById(R.id.tv_create_date);
             tv_create_date.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_calendar_selected, 0, 0, 0);
             tv_create_date.setCompoundDrawablePadding(10);
@@ -156,10 +230,13 @@ public class ViewReminderFragment extends Fragment implements LoaderManager.Load
                 call_reminder_tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_call_contact_checked, 0, 0, 0);
                 String[] contactData = Utils.getContactData(contactId, getActivity());
                 call_reminder_tv.setText(String.format(getString(R.string.remind_to_call_contact), contactData[0], contactData[1]));
-
+                Uri callContactUri = Uri.withAppendedPath(
+                        ContactsContract.CommonDataKinds.Phone.CONTENT_URI, contactId);
+                mReminder.setCallContactUri(callContactUri.toString());
             } else {
                 call_reminder_tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_call_contact_unchecked, 0, 0, 0);
                 call_reminder_tv.setText("No Call Reminders");
+                mReminder.setCallContactUri(null);
             }
             call_reminder_tv.setCompoundDrawablePadding(10);
 
@@ -169,6 +246,7 @@ public class ViewReminderFragment extends Fragment implements LoaderManager.Load
                 message_text_tv.setVisibility(View.VISIBLE);
                 message_text_tv.setText(messageText);
             }
+            mReminder.setMessageText(messageText);
 
             TextView auto_message_tv = (TextView) getView().findViewById(R.id.auto_message_tv);
             auto_message_tv.setCompoundDrawablePadding(10);
@@ -180,9 +258,13 @@ public class ViewReminderFragment extends Fragment implements LoaderManager.Load
                 auto_message_tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_message_contact_checked, 0, 0, 0);
                 FlowLayout flow_layout = (FlowLayout) getView().findViewById(R.id.flow_layout);
                 flow_layout.setVisibility(View.VISIBLE);
+                HashSet<String> messageContactUris = new HashSet<String>();
                 while (reminderContacts.moveToNext()) {
                     String id = reminderContacts.getString(reminderContacts
                             .getColumnIndex(ReminderContract.ReminderContactTable.COLUMN_CONTACT_ID));
+                    Uri messageContactUri = Uri.withAppendedPath(
+                            ContactsContract.CommonDataKinds.Phone.CONTENT_URI, id);
+                    messageContactUris.add(messageContactUri.toString());
                     String[] contactData = Utils.getContactData(id, getActivity());
                     LayoutInflater inflater = LayoutInflater.from(getActivity());
                     final View layout = inflater.inflate(R.layout.contact_preview_layout, null);
@@ -194,19 +276,23 @@ public class ViewReminderFragment extends Fragment implements LoaderManager.Load
                     remove_contact.setVisibility(View.GONE);
                     nameTV.setText(contactData[0] + "\n" + contactData[1]);
                 }
+                mReminder.setMessageContactUris(messageContactUris);
             } else {
                 auto_message_tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_message_contact_unchecked, 0, 0, 0);
                 auto_message_tv.setText("No Automated Messages");
+                mReminder.setMessageContactUris(null);
             }
             reminderContacts.close();
 
             TextView tv_reminder_details = (TextView) getView().findViewById(R.id.tv_reminder_details);
             int reminderType = data.getInt(data.getColumnIndex(ReminderContract.Reminders.COLUMN_REMINDER_TYPE));
+            mReminder.setReminderType(reminderType);
             if (reminderType == Constants.REMINDER_LOCATION) {
                 tv_reminder_details.setText("Location Details");
                 TextView tv_address = (TextView) getView().findViewById(R.id.tv_address);
 
                 final LocationBean locationBean = helper.getLocationData(mUri.getLastPathSegment());
+                mReminder.setLocationBean(locationBean);
                 tv_address.setText(locationBean.getDisplayAddress());
                 SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                         .findFragmentById(R.id.image_map);
@@ -234,6 +320,8 @@ public class ViewReminderFragment extends Fragment implements LoaderManager.Load
                 }
             } else {
                 //TODO:set time related UI
+                mReminder.setLocationBean(null);
+
             }
 
 
