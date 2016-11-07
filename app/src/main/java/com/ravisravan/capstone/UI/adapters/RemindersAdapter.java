@@ -35,10 +35,12 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.Remi
     // Flag to determine if we want to use a separate view for "today".
     private boolean mUseTodayLayout = true;
     private Cursor mCursor;
+    private ReminderAdapterOnClickHandler mOnClickHandler;
 
-    public RemindersAdapter(Context context, View emptyView) {
+    public RemindersAdapter(Context context, View emptyView, ReminderAdapterOnClickHandler reminderAdapterOnClickHandler) {
         mContext = context;
         mEmptyView = emptyView;
+        mOnClickHandler = reminderAdapterOnClickHandler;
     }
 
     @Override
@@ -86,8 +88,8 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.Remi
         }
     }
 
-    public static interface MessagesAdapterOnClickHandler {
-        void onClick(Long id, ReminderViewHolder vh, String message);
+    public static interface ReminderAdapterOnClickHandler {
+        void onClick(Long id, ReminderViewHolder vh);
     }
 
     /**
@@ -107,11 +109,10 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.Remi
 
         @Override
         public void onClick(View v) {
-            int idColumnIndex = mCursor.getColumnIndex(ReminderContract.MessageLkpTable._ID);
-            int contentColIndex = mCursor.getColumnIndex(ReminderContract.MessageLkpTable.COLUMN_CONTENT);
+            int idColumnIndex = mCursor.getColumnIndex(ReminderContract.Reminders._ID);
             int adapterPosition = getAdapterPosition();
             mCursor.moveToPosition(adapterPosition);
-            Log.e("Clicked reminder ", "" + idColumnIndex + contentColIndex + adapterPosition);
+            mOnClickHandler.onClick(mCursor.getLong(idColumnIndex), this);
         }
     }
 }

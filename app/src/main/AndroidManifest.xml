@@ -20,7 +20,7 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="your api key here" />
+            android:value="AIzaSyATR6TeBjrmvSxQkTZma866_HYokQ7muiI" />
 
         <activity
             android:name=".UI.activities.AllEventsActivity"
@@ -58,10 +58,18 @@
             android:exported="false"
             android:syncable="false" />
 
+        <!--<activity-->
+            <!--android:label="@string/title_activity_view_reminder"-->
+            <!--android:theme="@style/AppTheme.NoActionBar"></activity>-->
+
         <activity
             android:name=".UI.activities.ViewReminderActivity"
-            android:label="@string/title_activity_view_reminder"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:parentActivityName=".UI.activities.AllEventsActivity"
+            android:theme="@style/AppTheme.Details">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.ravisravan.capstone.UI.activities.AllEventsActivity" />
+        </activity>
     </application>
 
 </manifest>

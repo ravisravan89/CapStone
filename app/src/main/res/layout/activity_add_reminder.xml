@@ -23,7 +23,7 @@
 
     <include
         layout="@layout/content_add_reminder"
-        android:layout_width="600dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="?attr/actionBarSize"/>

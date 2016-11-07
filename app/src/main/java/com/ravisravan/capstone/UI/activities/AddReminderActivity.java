@@ -44,15 +44,13 @@ import com.ravisravan.capstone.beans.LocationBean;
 import com.ravisravan.capstone.beans.Reminder;
 import com.ravisravan.capstone.data.ReminderContract;
 import com.ravisravan.capstone.data.RemindersDbHelper;
+import com.ravisravan.capstone.utils.Utils;
 import com.ravisravan.capstone.utils.NavigationUtils;
 import com.wefika.flowlayout.FlowLayout;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashSet;
-import java.util.Locale;
 
 public class AddReminderActivity extends AppCompatActivity implements OnMapReadyCallback, View.OnClickListener {
 
@@ -190,10 +188,10 @@ public class AddReminderActivity extends AppCompatActivity implements OnMapReady
                 setCalendar.set(Calendar.YEAR, selectedYear);
                 setCalendar.set(Calendar.MONTH, selectedMonth);
                 setCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                Date selectedDate = setCalendar.getTime();
-                SimpleDateFormat sdf = new SimpleDateFormat("EEE,dd MMM yyyy", Locale.getDefault());
-                String displayDate = sdf.format(selectedDate);
-                textView.setText(displayDate);
+//                Date selectedDate = setCalendar.getTime();
+//                SimpleDateFormat sdf = new SimpleDateFormat("EEE,dd MMM yyyy", Locale.getDefault());
+//                String displayDate = sdf.format(selectedDate);
+                textView.setText(Utils.formaDate(setCalendar.getTimeInMillis()));
                 textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_calendar_selected, 0, 0, 0);
             }
 
@@ -205,8 +203,6 @@ public class AddReminderActivity extends AppCompatActivity implements OnMapReady
     private void setEndDate() {
         if (endDate == null)
             endDate = Calendar.getInstance();
-        if (startDate != null)
-            endDate = startDate;
         showDateDialog(endDate, tv_end_date, startDate);
     }
 

@@ -1,0 +1,95 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:background="@color/detail_accent_pane_background">
+
+    <android.support.v7.widget.GridLayout
+        android:id="@+id/detail_type_pane"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:padding="@dimen/activity_vertical_margin"
+        app:columnCount="2">
+
+        <TextView
+            android:id="@+id/tv_reminder_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/location_details_margin"
+            android:drawableLeft="@drawable/ic_location_reminder_checked"
+            android:drawablePadding="5dp"
+            android:fontFamily="sans-serif"
+            android:gravity="center_horizontal"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@android:color/white"
+            app:layout_columnSpan="2"
+            app:layout_columnWeight="1"
+            app:layout_gravity="center"
+            app:layout_rowWeight="1"
+            tools:text="10" />
+
+        <TextView
+            android:id="@+id/tv_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/location_details_margin"
+            android:fontFamily="sans-serif"
+            android:gravity="center_vertical"
+            android:text="Address: "
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:textColor="@color/detail_accent_label"
+            app:layout_columnSpan="2"
+            app:layout_columnWeight="1"
+            app:layout_gravity="fill"
+            app:layout_rowWeight="1" />
+
+
+        <fragment
+            android:id="@+id/image_map"
+            class="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="240dp"
+            android:layout_height="120dp"
+            android:layout_marginBottom="@dimen/location_details_margin"
+            app:layout_columnSpan="2"
+            app:layout_columnWeight="1"
+            app:layout_gravity="center_horizontal"
+            app:layout_rowWeight="1"
+            app:liteMode="true" />
+
+
+        <TextView
+            android:id="@+id/tv_radius"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/location_details_margin"
+            android:fontFamily="sans-serif"
+            android:gravity="center_vertical"
+            android:text="Radius: "
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:textColor="@color/detail_accent_label"
+            app:layout_columnSpan="2"
+            app:layout_columnWeight="1"
+            app:layout_gravity="fill"
+            app:layout_rowWeight="1" />
+
+
+        <TextView
+            android:id="@+id/tv_frequency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/location_details_margin"
+            android:fontFamily="sans-serif"
+            android:gravity="center_vertical"
+            android:text="Frequency: "
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:textColor="@color/detail_accent_label"
+            app:layout_columnSpan="2"
+            app:layout_columnWeight="1"
+            app:layout_gravity="fill"
+            app:layout_rowWeight="1" />
+
+
+    </android.support.v7.widget.GridLayout>
+</ScrollView>

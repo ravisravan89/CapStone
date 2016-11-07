@@ -10,5 +10,6 @@ public class ExtrasConstants {
     public static final String SELECTED_MESSAGE = "com.ravisravan.capstone.SELECTED_MESSAGE";
     public static final String SELECTED_MESSAGE_ID = "com.ravisravan.capstone.SELECTED_MESSAGE_ID";
     public static final String REMINDER_ID = "com.ravisravan.capstone.REMINDER_ID";
+    public static final String REMINDER_URI = "com.ravisravan.capstone.REMINDER_URI";
 
 }

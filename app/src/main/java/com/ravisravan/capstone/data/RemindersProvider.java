@@ -62,6 +62,16 @@ public class RemindersProvider extends ContentProvider {
                         sortOrder);
                 break;
             }
+            case REMINDER: {
+                retCursor = mOpenHelper.getReadableDatabase().query(ReminderContract.Reminders.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder);
+                break;
+            }
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }

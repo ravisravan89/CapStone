@@ -6,18 +6,18 @@
     app:cardElevation="@dimen/card_elevation"
     app:cardUseCompatPadding="true">
 
-    <GridLayout
+    <android.support.v7.widget.GridLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:columnCount="1"
+        app:columnCount="1"
         android:padding="@dimen/text_input_layout_padding"
-        android:rowCount="2">
+        app:rowCount="2">
 
         <RadioGroup
             android:id="@+id/rg_reminer_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_row="0"
+            app:layout_row="0"
             android:checkedButton="@+id/rb_location_reminder"
             android:orientation="horizontal">
 
@@ -56,7 +56,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_row="1" />
-    </GridLayout>
+            app:layout_row="1" />
+    </android.support.v7.widget.GridLayout>
 
 </android.support.v7.widget.CardView>
